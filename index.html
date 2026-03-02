@@ -126,7 +126,69 @@
             </div>
         </div>
     </div>
+<script>
+    // 1. 모달 열기 함수 (이게 있어야 클릭이 작동함)
+    function openModal(id) {
+        const modal = document.getElementById('detail-modal');
+        const content = document.getElementById('modal-content');
+        
+        // 데이터에서 내용 가져오기
+        if (typeof getModalContent === 'function') {
+            const html = getModalContent(id);
+            if (html) {
+                content.innerHTML = html;
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden'; // 스크롤 방지
+            } else {
+                alert('데이터를 불러올 수 없습니다.');
+            }
+        }
+    }
 
+    // 2. 모달 닫기 함수
+    function closeModal() {
+        const modal = document.getElementById('detail-modal');
+        modal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
+
+    // 3. 관리자 로그인 관련 (주신 HTML 버튼용)
+    function openAdminLogin() {
+        const login = document.getElementById('admin-login');
+        login.classList.remove('hidden');
+        setTimeout(() => login.classList.add('opacity-100'), 10);
+    }
+
+    function closeAdminLogin() {
+        const login = document.getElementById('admin-login');
+        login.classList.add('hidden');
+        login.classList.remove('opacity-100');
+    }
+
+    function verifyAdmin() {
+        const pw = document.getElementById('admin-pw').value;
+        if (pw === 'gusl') { // 비밀번호 설정
+            closeAdminLogin();
+            document.getElementById('admin-dashboard').classList.remove('hidden');
+            // JSON 에러 방지를 위해 에디터에 현재 데이터 삽입
+            document.getElementById('json-editor').value = JSON.stringify(siteData, null, 4);
+        } else {
+            document.getElementById('login-error').classList.remove('hidden');
+        }
+    }
+
+    // 초기 실행
+    window.onload = function() {
+        if (typeof renderApp === 'function') {
+            renderApp();
+        }
+    };
+</script>
+
+
+
+
+    
     <script>
         // ==========================================
         // 1. DATA LAYER (BizToss 전면 재설계 구조 반영)
