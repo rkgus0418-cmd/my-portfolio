@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gahyun Kim | Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    <style>
+        body { font-family: 'Pretendard', sans-serif; background-color: #FFFFFF; }
+        .text-charcoal { color: #222222; }
+        .text-navy { color: #1A365D; }
+        .bg-navy-10 { background-color: rgba(26, 54, 93, 0.1); }
+        .border-gray-light { border-color: #E5E7EB; }
+        .hover-navy { transition: all 0.3s ease; }
+        .hover-navy:hover { color: #1A365D; }
+        .card:hover { border-color: #1A365D; box-shadow: 0 10px 30px rgba(26, 54, 93, 0.05); }
+        .fade-in { animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* 폼 요소 스타일 */
+        input, textarea { border: 1px solid #E5E7EB; padding: 10px; border-radius: 6px; width: 100%; margin-bottom: 12px; outline: none; }
+        input:focus, textarea:focus { border-color: #1A365D; }
+    </style>
+</head>
+<body class="text-[#555555] antialiased">
+
+    <!-- 글로벌 네비게이션바 (CV 삭제됨, Admin 추가됨) -->
+    <nav class="fixed w-full bg-white/95 backdrop-blur-sm top-0 z-50 border-b border-gray-light">
+        <div class="max-w-5xl mx-auto px-6 py-5 flex justify-between items-center">
+            <a href="#" onclick="showPage('home')" class="text-2xl font-bold text-charcoal tracking-tighter hover-navy">GK.</a>
+            <div class="space-x-6 text-sm font-medium">
+                <a href="#" onclick="showPage('home')" class="hover-navy">Work</a>
+                <a href="#" class="hover-navy">Framework</a>
+                <a href="#" class="hover-navy">Contact</a>
+                <a href="#" onclick="showPage('admin-login')" class="hover-navy text-gray-400">🔒 Admin</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- LAYER 1: 메인 홈페이지 -->
+    <div id="home" class="page fade-in pt-32 pb-40">
+        <header class="max-w-5xl mx-auto px-6 pt-20 pb-24">
+            <h1 id="hero-name" class="text-6xl md:text-7xl font-extrabold text-charcoal tracking-tight mb-6"></h1>
+            <p id="hero-subtitle" class="text-xl md:text-2xl text-[#555555] font-light"></p>
+        </header>
+        <section id="project-list" class="max-w-5xl mx-auto px-6 flex flex-col gap-10"></section>
+    </div>
+
+    <!-- LAYER 2: 동적 상세 페이지 -->
+    <div id="detail-page" class="page hidden fade-in pt-32 pb-40">
+        <div class="max-w-4xl mx-auto px-6 mt-16">
+            <button onclick="showPage('home')" class="text-sm font-semibold text-gray-400 hover:text-navy mb-8">← Back to Work</button>
+            <h1 id="detail-title" class="text-5xl font-bold text-charcoal mb-6"></h1>
+            <p id="detail-desc" class="text-xl mb-12"></p>
+            
+            <div class="space-y-16" id="detail-content">
+                <!-- 자바스크립트로 동적 렌더링 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN LOGIN -->
+    <div id="admin-login" class="page hidden fade-in pt-48 pb-40">
+        <div class="max-w-md mx-auto px-6 border border-gray-light p-10 rounded-2xl shadow-sm text-center">
+            <h2 class="text-2xl font-bold text-charcoal mb-6">관리자 로그인</h2>
+            <input type="password" id="admin-pw" placeholder="비밀번호를 입력하세요" class="text-center">
+            <button onclick="checkAdminPw()" class="w-full bg-navy-10 text-navy py-3 rounded-lg font-bold hover:bg-[#1A365D] hover:text-white transition mt-2">로그인</button>
+            <p id="login-error" class="text-red-500 text-sm mt-4 hidden">비밀번호가 틀렸습니다.</p>
+        </div>
+    </div>
+
+    <!-- ADMIN DASHBOARD -->
+    <div id="admin-dashboard" class="page hidden fade-in pt-32 pb-40">
+        <div class="max-w-3xl mx-auto px-6">
+            <h1 class="text-4xl font-bold text-charcoal mb-10">⚙️ 사이트 관리자</h1>
+            
+            <!-- 기본 정보 수정 -->
+            <div class="bg-gray-50 p-8 rounded-xl border border-gray-light mb-10">
+                <h3 class="text-xl font-bold text-charcoal mb-4">■ 기본 정보 수정</h3>
+                <label class="text-sm font-bold mb-1 block">이름 (Headline)</label>
+                <input type="text" id="edit-name">
+                <label class="text-sm font-bold mb-1 block">서브타이틀</label>
+                <input type="text" id="edit-subtitle">
+                <button onclick="saveGlobalInfo()" class="bg-[#1A365D] text-white px-4 py-2 rounded text-sm font-bold mt-2">저장하기</button>
+            </div>
+
+            <!-- 새 프로젝트 추가 -->
+            <div class="bg-white p-8 rounded-xl border border-gray-light mb-10 shadow-sm">
+                <h3 class="text-xl font-bold text-charcoal mb-4">■ 새 프로젝트 추가 ➕</h3>
+                <input type="text" id="new-title" placeholder="프로젝트명 (예: E.Phinance)">
+                <input type="text" id="new-desc" placeholder="한줄 설명 (예: 산업 분석 체계 구축)">
+                <input type="text" id="new-tags" placeholder="태그 (쉼표로 구분. 예: 산업 분석,UX/UI)">
+                <textarea id="new-problem" rows="3" placeholder="문제 정의 (상세 페이지 내용)"></textarea>
+                <textarea id="new-insight" rows="3" placeholder="핵심 통찰 (상세 페이지 내용)"></textarea>
+                <button onclick="addProject()" class="bg-[#1A365D] text-white px-6 py-3 rounded-lg font-bold w-full mt-4 hover:bg-navy-10 hover:text-navy transition border border-[#1A365D]">프로젝트 추가하기</button>
+            </div>
+
+            <!-- 기존 프로젝트 목록 -->
+            <div class="bg-white p-8 rounded-xl border border-gray-light shadow-sm">
+                <h3 class="text-xl font-bold text-charcoal mb-4">■ 등록된 프로젝트 목록</h3>
+                <ul id="admin-project-list" class="space-y-3"></ul>
+            </div>
+            
+            <button onclick="showPage('home')" class="mt-10 text-gray-400 hover:text-navy font-medium underline">나가기 (홈으로)</button>
+        </div>
+    </div>
+
+    <!-- 자바스크립트: 데이터 관리 및 렌더링 -->
+    <script>
+        // 1. 기본 데이터 셋팅 (최초 접속 시)
+        const defaultData = {
+            name: "Gahyun Kim",
+            subtitle: "Strategic Designer & Problem Solver",
+            projects:[
+                { id: "p1", title: "E.Phinance", desc: "산업 분석 체계 구축", tags: ["산업 분석", "데이터 구조화"], problem: "기존 산업 데이터와 금융 지표들이 파편화되어 있어 비효율이 발생했습니다.", insight: "구조화된 프레임워크만이 분석 속도를 혁신적으로 단축시킵니다." },
+                { id: "p2", title: "BizToss", desc: "시장 구조 재설계를 통한 양면시장 최적화", tags: ["비즈니스 전략", "UX/UI"], problem: "거래 시장에서 신뢰 부족으로 인해 실사 프로세스가 지연되었습니다.", insight: "신뢰 비용을 극적으로 낮추는 시스템 설계가 핵심입니다." },
+                { id: "p3", title: "Communication & Discipline", desc: "설득의 소통과 실행의 규율", tags: ["소통 역량", "자기 규율"], problem: "전략은 머리에서 나오지만 실행은 일상의 규율에서 나옵니다.", insight: "지속적인 달리기와 테니스, 그리고 제주에서의 성찰이 저의 원동력입니다." }
+            ]
+        };
+
+        // 로컬 스토리지에서 데이터 불러오기 (없으면 기본데이터 사용)
+        let siteData = JSON.parse(localStorage.getItem('portfolioData')) || defaultData;
+
+        // 페이지 초기화 렌더링
+        function initSite() {
+            document.getElementById('hero-name').innerText = siteData.name;
+            document.getElementById('hero-subtitle').innerText = siteData.subtitle;
+            
+            const projectListEl = document.getElementById('project-list');
+            projectListEl.innerHTML = '';
+            
+            siteData.projects.forEach(p => {
+                const tagsHtml = p.tags.map(tag => `<span class="bg-navy-10 text-navy px-3 py-1 text-xs font-semibold rounded">${tag.trim()}</span>`).join('');
+                const card = `
+                    <div onclick="openProject('${p.id}')" class="card cursor-pointer border border-gray-light rounded-2xl p-10 bg-white transition-all duration-300 group">
+                        <div class="flex gap-2 mb-4">${tagsHtml}</div>
+                        <h2 class="text-3xl font-bold text-charcoal mb-2 group-hover:text-navy transition-colors">${p.title}</h2>
+                        <p class="text-lg font-light">${p.desc}</p>
+                        <div class="mt-8 text-sm font-medium text-gray-400 group-hover:text-navy transition-colors flex items-center">
+                            자세히 보기 <span class="ml-2 transform group-hover:translate-x-2 transition-transform">→</span>
+                        </div>
+                    </div>`;
+                projectListEl.innerHTML += card;
+            });
+        }
+
+        // 상세 페이지 열기
+        function openProject(id) {
+            const p = siteData.projects.find(x => x.id === id);
+            document.getElementById('detail-title').innerText = p.title;
+            document.getElementById('detail-desc').innerText = p.desc;
+            document.getElementById('detail-content').innerHTML = `
+                <section><h3 class="text-2xl font-bold text-charcoal border-b border-gray-light pb-4 mb-6">1. 문제 정의</h3><p class="leading-relaxed">${p.problem}</p></section>
+                <section><h3 class="text-2xl font-bold text-charcoal border-b border-gray-light pb-4 mb-6">2. 핵심 통찰</h3>
+                <blockquote class="border-l-4 border-navy pl-6 py-2 bg-navy-10 text-charcoal italic rounded-r-lg">"${p.insight}"</blockquote></section>
+            `;
+            showPage('detail-page');
+        }
+
+        // 페이지 전환 함수
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.add('hidden'));
+            document.getElementById(pageId).classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if(pageId === 'admin-dashboard') loadAdminData();
+        }
+
+        // 관리자 로그인 ('gusl')
+        function checkAdminPw() {
+            const pw = document.getElementById('admin-pw').value;
+            if (pw === 'gusl') {
+                document.getElementById('admin-pw').value = '';
+                document.getElementById('login-error').classList.add('hidden');
+                showPage('admin-dashboard');
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+            }
+        }
+
+        // 엔터키 로그인 지원
+        document.getElementById('admin-pw').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') checkAdminPw();
+        });
+
+        // ------------------ 관리자 기능 로직 ------------------
+        function loadAdminData() {
+            document.getElementById('edit-name').value = siteData.name;
+            document.getElementById('edit-subtitle').value = siteData.subtitle;
+            renderAdminProjectList();
+        }
+
+        function renderAdminProjectList() {
+            const listEl = document.getElementById('admin-project-list');
+            listEl.innerHTML = '';
+            siteData.projects.forEach(p => {
+                listEl.innerHTML += `
+                    <li class="flex justify-between items-center bg-gray-50 p-4 border border-gray-light rounded-lg">
+                        <div><strong class="text-charcoal">${p.title}</strong> <span class="text-sm text-gray-500">- ${p.desc}</span></div>
+                        <button onclick="deleteProject('${p.id}')" class="text-red-500 text-sm font-bold hover:underline">삭제</button>
+                    </li>`;
+            });
+        }
+
+        function saveGlobalInfo() {
+            siteData.name = document.getElementById('edit-name').value;
+            siteData.subtitle = document.getElementById('edit-subtitle').value;
+            saveAndRefresh();
+            alert('기본 정보가 저장되었습니다.');
+        }
+
+        function addProject() {
+            const title = document.getElementById('new-title').value;
+            const desc = document.getElementById('new-desc').value;
+            const tags = document.getElementById('new-tags').value.split(',');
+            const problem = document.getElementById('new-problem').value;
+            const insight = document.getElementById('new-insight').value;
+
+            if(!title) return alert('프로젝트명을 입력하세요.');
+
+            siteData.projects.push({ id: 'p' + Date.now(), title, desc, tags, problem, insight });
+            saveAndRefresh();
+            
+            // 폼 초기화
+            document.querySelectorAll('#admin-dashboard input[type="text"], #admin-dashboard textarea').forEach(el => el.value = '');
+            alert('새 프로젝트가 추가되었습니다!');
+        }
+
+        function deleteProject(id) {
+            if(confirm('정말 삭제하시겠습니까?')) {
+                siteData.projects = siteData.projects.filter(p => p.id !== id);
+                saveAndRefresh();
+            }
+        }
+
+        function saveAndRefresh() {
+            localStorage.setItem('portfolioData', JSON.stringify(siteData));
+            initSite();
+            renderAdminProjectList();
+        }
+
+        // 최초 실행
+        initSite();
+    </script>
+</body>
+</html>
