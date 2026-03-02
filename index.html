@@ -243,51 +243,30 @@
                     </div>
                 </nav>
 
-// 기존 renderHero 함수 내부나 메인 HTML의 header 부분을 이 코드로 교체하세요.
-const heroSection = `
-<header class="relative min-h-[85vh] flex flex-col justify-center mb-16 fade-in-up rounded-[48px] overflow-hidden px-8 md:px-20 py-24 mt-8 border border-white/10 shadow-2xl group">
-    
-    <div class="absolute inset-0 z-0 overflow-hidden">
-        <img src="images/hero_bg.jpg" alt="Strategic Architecture" 
-             class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
-        
-        <div class="absolute inset-0 bg-gradient-to-r from-[#1a0b3b]/95 via-[#2d1b5a]/70 to-transparent"></div>
-        
-        <div class="absolute -bottom-20 -left-20 w-96 h-96 bg-purple-600/20 rounded-full blur-[120px]"></div>
-    </div>
-    
-    <div class="relative z-10 max-w-5xl">
-        <div class="flex flex-wrap gap-3 mb-10">
-            <span class="px-4 py-1.5 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[11px] font-bold tracking-[0.2em] uppercase rounded-full">Strategic Designer</span>
-            <span class="px-4 py-1.5 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[11px] font-bold tracking-[0.2em] uppercase rounded-full">Problem Solver</span>
-            <span class="px-4 py-1.5 bg-purple-500/30 backdrop-blur-md border border-purple-400/30 text-purple-200 text-[11px] font-bold tracking-[0.2em] uppercase rounded-full shadow-lg shadow-purple-500/20">All-rounder</span>
-        </div>
+                <main class="pt-32 pb-40 max-w-7xl mx-auto px-6 lg:px-12">
+                    <header class="min-h-[60vh] flex flex-col justify-center mb-10 fade-in-up">
+                        <div class="flex flex-wrap gap-3 mb-8">${tagsHtml}</div>
+                        <h1 class="text-6xl md:text-8xl font-black text-dark tracking-tighter leading-[1.1] mb-6">${siteData.hero.title}</h1>
+                        <p class="text-2xl font-bold text-brand-600 mb-4">${siteData.hero.subtitle}</p>
+                        <p class="text-lg text-slate-500 font-medium max-w-2xl leading-relaxed">${siteData.hero.description}</p>
+                    </header>
 
-        <h1 class="text-6xl md:text-[7.5rem] font-black text-white tracking-tighter leading-[0.95] mb-8 drop-shadow-sm">
-            Architecting<br>
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-purple-300">
-                Business Structures.
-            </span>
-        </h1>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        ${projectsHtml}
+                    </div>
+                </main>
 
-        <div class="space-y-4 max-w-2xl">
-            <p class="text-2xl md:text-3xl font-bold text-purple-300 tracking-tight">Gahyun Kim</p>
-            <p class="text-lg md:text-xl text-slate-300 font-medium leading-relaxed opacity-90">
-                단순한 화면을 넘어, 시장의 구조와 신뢰의 흐름을 설계하는<br class="hidden md:block">
-                전략적 디자이너이자 비즈니스 빌더입니다.
-            </p>
-        </div>
-        
-        <div class="mt-16 flex items-center gap-4 text-white/40 text-xs font-bold tracking-widest uppercase animate-pulse">
-            <div class="w-12 h-[1px] bg-white/20"></div>
-            Scroll to explore work
-        </div>
-    </div>
-</header>
-`;
-
-
-              
+                <div id="detail-modal" class="fixed inset-0 z-50 bg-surface hidden overflow-y-auto scroll-smooth">
+                    <div class="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-xl px-6 py-5 border-b border-slate-200/50 flex justify-between items-center">
+                        <span class="text-xs font-black tracking-widest text-brand-600 uppercase" id="modal-label">PROJECT DETAILS</span>
+                        <button onclick="closeModal()" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center hover:bg-slate-200 transition-colors text-slate-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                    </div>
+                    <div id="modal-content" class="max-w-7xl mx-auto px-6 lg:px-12 pt-16 pb-40"></div>
+                </div>
+            `;
+        }
 
         // ==========================================
         // 3. MODAL CONTENT GENERATOR
