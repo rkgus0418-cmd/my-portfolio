@@ -9,30 +9,30 @@
     <!-- Pretendard Font -->
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
     
-    <!-- Tailwind Configuration (#4B56D2 Theme) -->
+    <!-- Tailwind Configuration (전체 테마를 #4B56D2 기반으로 전면 수정) -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans:['Pretendard', 'sans-serif'] },
+                    fontFamily: { sans: ['Pretendard', 'sans-serif'] },
                     colors: {
                         brand: { 
-                            50: '#F6F7FB', 
+                            50: '#F6F7FB',  /* report-card 배경색 일치 */
                             100: '#EAEBFA', 
-                            500: '#4B56D2', 
+                            500: '#4B56D2', /* 메인 포인트 컬러 */
                             600: '#3D47B3', 
                             900: '#1D2259' 
                         },
                         surface: '#F8F9FF',
                         dark: '#111827',
-                        text: '#555555' 
+                        text: '#555555' /* 기본 텍스트 컬러 지정 */
                     },
                     boxShadow: {
                         'soft': '0 8px 30px rgba(0, 0, 0, 0.03)',
                         'hover': '0 20px 40px rgba(75, 86, 210, 0.15)',
                         'modal': '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
                     },
-                    borderRadius: { '3xl': '16px', '4xl': '20px' }
+                    borderRadius: { '3xl': '24px', '4xl': '32px' }
                 }
             }
         }
@@ -53,7 +53,7 @@
             box-shadow: 0 20px 40px rgba(75, 86, 210, 0.08);
         }
 
-        /* E.Phinance Custom CSS */
+        /* E.Phinance Custom CSS (요청사항 100% 반영) */
         .project-title { font-size: 3.75rem; font-weight: 900; color: #111827; letter-spacing: -0.02em; }
         .project-subtitle { font-size: 20px; font-weight: 500; color: #4B56D2; margin-top: 12px; }
         .project-description { font-size: 16px; line-height: 1.7; color: #555; max-width: 720px; }
@@ -74,6 +74,7 @@
         @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         @keyframes slideDown { from { transform: translateY(0); opacity: 1; } to { transform: translateY(100%); opacity: 0; } }
 
+        /* Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
@@ -82,7 +83,7 @@
 </head>
 <body class="relative">
 
-    <!-- App Container -->
+    <!-- App Container (Dynamic Rendering) -->
     <div id="app"></div>
 
     <!-- Floating Admin Button -->
@@ -126,75 +127,13 @@
             </div>
         </div>
     </div>
-<script>
-    // 1. 모달 열기 함수 (이게 있어야 클릭이 작동함)
-    function openModal(id) {
-        const modal = document.getElementById('detail-modal');
-        const content = document.getElementById('modal-content');
-        
-        // 데이터에서 내용 가져오기
-        if (typeof getModalContent === 'function') {
-            const html = getModalContent(id);
-            if (html) {
-                content.innerHTML = html;
-                modal.classList.remove('hidden');
-                document.body.style.overflow = 'hidden'; // 스크롤 방지
-            } else {
-                alert('데이터를 불러올 수 없습니다.');
-            }
-        }
-    }
 
-    // 2. 모달 닫기 함수
-    function closeModal() {
-        const modal = document.getElementById('detail-modal');
-        modal.classList.add('hidden');
-        document.body.style.overflow = 'auto';
-    }
-
-    // 3. 관리자 로그인 관련 (주신 HTML 버튼용)
-    function openAdminLogin() {
-        const login = document.getElementById('admin-login');
-        login.classList.remove('hidden');
-        setTimeout(() => login.classList.add('opacity-100'), 10);
-    }
-
-    function closeAdminLogin() {
-        const login = document.getElementById('admin-login');
-        login.classList.add('hidden');
-        login.classList.remove('opacity-100');
-    }
-
-    function verifyAdmin() {
-        const pw = document.getElementById('admin-pw').value;
-        if (pw === 'gusl') { // 비밀번호 설정
-            closeAdminLogin();
-            document.getElementById('admin-dashboard').classList.remove('hidden');
-            // JSON 에러 방지를 위해 에디터에 현재 데이터 삽입
-            document.getElementById('json-editor').value = JSON.stringify(siteData, null, 4);
-        } else {
-            document.getElementById('login-error').classList.remove('hidden');
-        }
-    }
-
-    // 초기 실행
-    window.onload = function() {
-        if (typeof renderApp === 'function') {
-            renderApp();
-        }
-    };
-</script>
-
-
-
-
-    
     <script>
         // ==========================================
-        // 1. DATA LAYER (BizToss 전면 재설계 구조 반영)
+        // 1. DATA LAYER (JSON Structure)
         // ==========================================
         const defaultData = {
-            nav:["Work", "Framework", "Contact"],
+            nav: ["Work", "Framework", "Contact"],
             hero: {
                 title: "Architecting<br>Business Structures.",
                 subtitle: "Gahyun Kim",
@@ -203,7 +142,7 @@
             },
             projects:[
                 { id: "ephinance", category: "학회 창설 / 시스템 설계", title: "E.Phinance", desc: "바이오 산업을 구조적으로 이해하기 위한 분석 플랫폼 설계" },
-                { id: "biztoss", category: "초기 멤버 / 비즈니스 빌딩", title: "BizToss", desc: "온라인 스토어 M&A 시장의 구조를 재정의하다" },
+                { id: "biztoss", category: "초기 멤버 / 비즈니스 빌딩", title: "BizToss", desc: "시장을 설득하고, 비즈니스를 증명하다. (기획부터 영업까지)" },
                 { id: "media", category: "영상 기획 / 1인 제작", title: "Visual Storytelling", desc: "메시지를 시각화하는 시네마틱 1인 미디어 제작 프로세스" },
                 { id: "discipline", category: "Project Management", title: "Discipline & Execution", desc: "전략적 기획력과 자기 관리 역량의 증명 (Extracurricular)" }
             ],
@@ -215,8 +154,7 @@
                     report: {
                         title: "OliX rNPV Valuation Study",
                         content: "GalNAc-siRNA 플랫폼 기반 파이프라인 분석<br/>Risk-Adjusted NPV 모델 설계<br/>WACC 10.15% 적용 기업가치 산출",
-                        btnText: "View Full Report PDF",
-                        link: "#"
+                        btnText: "View Full Report PDF"
                     },
                     link: "https://ephinance.com",
                     linkImg: "images/ephinance_site.jpg", 
@@ -262,81 +200,21 @@
                         "SpaceX 상장 시 시장 영향 시나리오 분석"
                     ]
                 },
-                
-                // [NEW] BIZTOSS DATA STRUCTURE
                 "biztoss": {
-                    title: "Market Design & Execution",
-                    subtitle: "온라인 스토어 M&A 시장의 구조를 재정의하다",
-                    desc: "기존 소규모 온라인 스토어 거래는 정보 비대칭과 실사 비용 문제로 인해 구조적으로 비효율적이었습니다.<br><br>Biztoss는 이를 해결하기 위해 실사 자동화 기반 중개 플랫폼을 설계한 프로젝트입니다. 저는 시장 가설 정의부터 퍼널 재설계, UI/UX 개선, 광고·CRM 전략 수립까지 전 과정을 주도했습니다.",
-                    sections:[
-                        {
-                            num: "01",
-                            title: "Market Hypothesis",
-                            subtitle: "소규모 온라인 스토어 M&A 시장 구조 재정의",
-                            prob:["소형 스토어는 전통 M&A 대상이 아님", "실사 비용 > 거래 규모", "정보 비대칭으로 신뢰 붕괴"],
-                            action:["실사 자동화 기반 중개 플랫폼 기획 참여", "이커머스 특화 가치 평가 프레임워크 고도화", "데모데이 발표 구조 설계 및 IR 페이지 제작", "1-Pager 및 투자자 스토리라인 재구성"],
-                            impact:["기존 '창업' 프레임 → '검증된 자산 인수' 프레임 전환", "Seed 투자 9억 원 유치", "TIPS 프로그램 선정"],
-                            img: "images/biztoss_ir.jpg"
-                        },
-                        {
-                            num: "02",
-                            title: "AAARR Funnel Redesign",
-                            subtitle: "전환율 중심 구조 재설계",
-                            prob:["유입은 있으나 전환 없음", "사용자 여정 단절", "명확한 세그먼트 부재"],
-                            action:["AAARR 기준 전체 퍼널 재설계", "고객 세그먼트 재정의 (셀러 / 바이어 분리 전략)", "단계별 이탈 원인 분석", "전환 유도 메시지 프레임워크 설계"],
-                            impact:["전환율 약 300% 개선", "유효 고객 유입 안정화"],
-                            img: "images/biztoss_funnel.jpg"
-                        },
-                        {
-                            num: "03",
-                            title: "Platform & UI/UX Overhaul",
-                            subtitle: "신뢰 구조 시각화",
-                            action:["전체 플랫폼 정보 구조 재설계", "사용자 여정 기반 UI 수정", "'Why Us' 탭 신설", "실사 구조 및 거래 안전성 명확화"],
-                            impact: ["체류 시간 증가", "신뢰 기반 전환율 상승"],
-                            pdf: true, // Special PDF Component trigger
-                            img: "images/biztoss_ui.jpg"
-                        },
-                        {
-                            num: "04",
-                            title: "Performance Marketing Rebuild",
-                            subtitle: "CTR 0% 극복 마케팅 전략",
-                            prob: ["CTR 0%에 가까운 광고 효율"],
-                            action:["광고 소재 50종 기획 및 제작", "감성 제거, 실질 이익 중심 카피라이팅", "타겟 재설정 및 메시지 분리 전략"],
-                            impact:["초기 트래픽 유의미 확보", "유효 리드 증가"],
-                            img: "images/biztoss_ads.jpg"
-                        },
-                        {
-                            num: "05",
-                            title: "Referral Incentive Model",
-                            subtitle: "네트워크 기반 거래 활성화",
-                            action:["셀러·바이어 추천 시 수익 공유 구조 설계", "네트워크 기반 거래 활성화 모델 도입", "초기 커뮤니티 확산 전략 수립"],
-                            img: "images/biztoss_referral.jpg"
-                        },
-                        {
-                            num: "06",
-                            title: "Offline Growth Experiment",
-                            subtitle: "오프라인 커뮤니티 확산",
-                            prob:["이전 온라인 세션 참여자 단 3명"],
-                            action:["오프라인 행사 기획 및 운영 총괄", "커뮤니티 기반 확산 전략", "세션 구조 재설계"],
-                            impact:["참여자 38명 확보", "커뮤니티 신뢰 기반 형성"],
-                            img: "images/biztoss_event.jpg"
-                        },
-                        {
-                            num: "07",
-                            title: "CRM & Cold Outreach",
-                            subtitle: "다이렉트 아웃리치 프레임워크",
-                            action:["고객 재분류 및 CRM 메시지 구조 전면 재설계", "셀러 대상 콜드콜 이메일 발송", "니즈 기반 세그먼트 메시지 설계"],
-                            img: "images/biztoss_crm.jpg"
-                        }
-                    ],
-                    results:[
-                        "Seed 투자 9억 원 유치",
-                        "TIPS 프로그램 선정",
-                        "전환율 약 300% 개선",
-                        "초기 시장 가설 검증 완료"
+                    title: "시장을 설득하고,<br><span class='text-brand-500'>비즈니스를 증명</span>하다.",
+                    subtitle: "Top-down Strategy",
+                    quote: "\"초기 아이디에이션부터 투자 유치까지 비즈니스 빌딩 전 과정을 주도했습니다. 단순한 운영을 넘어, 시장이 원하는 논리로 비즈니스의 가치를 설계한 기록입니다.\"",
+                    cards:[
+                        { num: "01", title: "The Narrative for Growth", badge: "IR & Pitching", icon: "🚀", desc: "투자자를 설득하는 비즈니스의 논리적 서사", action: "스타트업 데모데이를 위한 1-Pager와 IR 발표 자료의 논리 구조를 직접 설계했습니다.", outcome: "초기 비즈니스 모델의 시장성 및 투자 가치 직접 증명", img: "images/biztoss_ir.jpg" },
+                        { num: "02", title: "Defining the Vision", badge: "Foundational Strategy", icon: "🎯", desc: "모호한 아이디어를 실질적인 수익 모델로 구조화", action: "시장 조사와 비즈니스 모델링을 통해 서비스의 핵심 뼈대를 구축했습니다.", outcome: "Zero-to-One 비즈니스 로직 및 신뢰 기반 플랫폼 방향성 확립", img: "" },
+                        { num: "03", title: "The Language of Trust", badge: "Core Copywriting", icon: "✍️", desc: "고객의 '결제'를 이끌어내는 신뢰의 언어 설계", action: "홈페이지의 모든 텍스트를 데이터 기반의 직관적인 언어로 전권 집필했습니다.", outcome: "모호한 감성을 배제한 '실질적 이익' 중심의 브랜드 언어 구축", img: "" },
+                        { num: "04", title: "Market Perception Shift", badge: "Brand Strategy", icon: "🧠", desc: "'막연한 창업'을 '안전한 자산 인수'로 프레임 전환", action: "공급자와 수요자 양측의 심리적 장벽을 낮추는 인식 전환 전략을 수립했습니다.", outcome: "시장 진입 장벽 최소화 및 타겟 확장성 확보", img: "" },
+                        { num: "05", title: "Conversion Engineering", badge: "Performance Marketing", icon: "📈", desc: "클릭률 0%의 위기를 극복한 퍼포먼스 마케팅", action: "광고 소재 50종을 직접 기획/제작하여 유의미한 초기 트래픽을 창출했습니다.", outcome: "유효 고객 유입량 300% 증대로 비즈니스 활력 확보", img: "images/biztoss_ads.jpg" },
+                        { num: "06", title: "Seamless User Funnel", badge: "UI/UX Design", icon: "✨", desc: "이탈 데이터를 기반으로 한 플랫폼 전면 재설계", action: "사용자 여정을 분석하여 정보 탐색 마찰을 최소화하는 화면 구조를 설계했습니다.", outcome: "전환율 극대화 및 직관적 인터페이스 완성", img: "images/biztoss_ui.jpg" },
+                        { num: "07", title: "Fearless Field Execution", badge: "Field Ops", icon: "📞", desc: "책상이 아닌 현장에서 찾아낸 생존 로직", action: "타겟 바이어 리스트를 발굴하여 수십 통의 콜드콜을 통해 비즈니스 가설을 검증했습니다.", outcome: "현장 피드백의 즉각적 서비스 반영으로 PMF 가속화", img: "" },
+                        { num: "08", title: "Visualizing Transparency", badge: "Operational Framework", icon: "📊", desc: "정보 비대칭을 해소하는 실사 리포트 표준화", action: "복잡한 원시 데이터를 구매자가 즉각 이해할 수 있는 시각화 템플릿을 설계했습니다.", outcome: "플랫폼 내 '거래 신뢰도'의 압도적 상승", img: "" }
                     ]
                 },
-
                 "media": {
                     title: "Visual Storytelling",
                     subtitle: "메시지를 시각화하는 1인 기획·제작자",
@@ -361,6 +239,7 @@
             }
         };
 
+        // 로컬 스토리지 데이터 바인딩
         let siteData = JSON.parse(localStorage.getItem('gahyun_portfolioData'));
         if (!siteData) { siteData = JSON.parse(JSON.stringify(defaultData)); }
 
@@ -369,9 +248,14 @@
         // ==========================================
         function renderApp() {
             const app = document.getElementById('app');
+            
+            // Header Navbar
             let navHtml = siteData.nav.map(item => `<a href="#/" class="hover:text-brand-500 transition-colors">${item}</a>`).join('');
+            
+            // Hero Tags
             let tagsHtml = siteData.hero.tags.map(tag => `<span class="bg-white/10 border border-white/20 text-white backdrop-blur-sm px-4 py-1.5 rounded-full text-xs font-bold shadow-sm">${tag}</span>`).join('');
             
+            // Main Page Project Cards
             let projectsHtml = siteData.projects.map((p, i) => `
                 <article class="tech-card rounded-4xl p-8 md:p-10 cursor-pointer fade-in-up delay-${(i+1)*100}" onclick="openModal('${p.id}')">
                     <div class="flex gap-2 mb-6">
@@ -386,6 +270,7 @@
                 </article>
             `).join('');
 
+            // HTML Assemble
             app.innerHTML = `
                 <nav class="fixed w-full top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-100">
                     <div class="max-w-7xl mx-auto px-6 lg:px-12 py-5 flex justify-between items-center">
@@ -397,6 +282,8 @@
                 </nav>
 
                 <main class="pt-24 pb-40 max-w-7xl mx-auto px-6 lg:px-12">
+                    
+                    <!-- Hero Section with 3D Graphic Placeholder -->
                     <header class="relative min-h-[70vh] flex flex-col justify-center mb-20 fade-in-up rounded-[40px] overflow-hidden px-10 md:px-16 py-20 mt-6 shadow-soft border border-slate-100">
                         <div class="absolute inset-0 z-0 bg-[#0F172A]">
                             <img src="images/hero_bg.jpg" alt="Hero Background" class="w-full h-full object-cover opacity-80">
@@ -415,6 +302,7 @@
                     </div>
                 </main>
 
+                <!-- Project Detail Modal -->
                 <div id="detail-modal" class="fixed inset-0 z-50 bg-white hidden overflow-y-auto scroll-smooth">
                     <div class="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-xl px-6 py-5 border-b border-slate-100 flex justify-between items-center shadow-sm">
                         <span class="text-xs font-black tracking-widest text-brand-500 uppercase" id="modal-label">PROJECT DETAILS</span>
@@ -422,40 +310,42 @@
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                         </button>
                     </div>
-                    <div id="modal-content" class="max-w-7xl mx-auto px-0 md:px-12 pt-16 pb-40"></div>
+                    <div id="modal-content" class="max-w-7xl mx-auto px-6 lg:px-12 pt-16 pb-40"></div>
                 </div>
             `;
         }
 
         // ==========================================
-        // 3. MODAL CONTENT GENERATOR 
+        // 3. MODAL CONTENT GENERATOR (요청 템플릿 완벽 매핑)
         // ==========================================
         function getModalContent(id) {
             const data = siteData.details[id];
             if (!data) return '';
 
-            // 🔵 E.PHINANCE
+            // E.PHINANCE (CSS Class 요구사항 완벽 반영)
             if (id === 'ephinance') {
                 return `
-                    <div class="max-w-4xl mx-auto pt-8 px-6 md:px-0">
+                    <div class="max-w-4xl mx-auto pt-8 md:text-left">
                         <header class="mb-16">
                             <h1 class="project-title">${data.title}</h1>
                             <h2 class="project-subtitle">${data.subtitle}</h2>
                             <p class="project-description mt-6">${data.description}</p>
                             
-                            <!-- PDF Download Card -->
+                            <!-- Custom Report Card CSS Applied -->
                             <div class="report-card">
                                 <h3 class="text-2xl font-bold text-dark mb-3">${data.report.title}</h3>
                                 <p class="text-[16px] text-[#555] leading-[1.7]">${data.report.content}</p>
-                                <a href="${data.report.link}" class="download-btn mt-6 hover:opacity-80 transition-opacity" download>
+                                <a href="${data.report.link || '#'}" class="download-btn mt-6 hover:opacity-80 transition-opacity">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                                     ${data.report.btnText}
                                 </a>
                             </div>
                         </header>
 
+                        <!-- E.Phinance Website Image -->
                         ${data.linkImg ? `<div class="aspect-video w-full bg-surface rounded-3xl mb-16 overflow-hidden border border-slate-100 shadow-soft flex items-center justify-center relative p-2"><img src="${data.linkImg}" alt="Site Preview" class="w-full h-full object-cover rounded-2xl" onerror="this.style.opacity='0'"><span class="absolute text-slate-400 font-bold tracking-widest text-sm z-0">Website Preview Image</span></div>` : ''}
 
+                        <!-- Problem & Track System (사진칸 없이 텍스트만) -->
                         <div class="space-y-24 mb-24">
                             ${data.sections.map(s => `
                                 <section>
@@ -465,7 +355,7 @@
                             `).join('')}
                         </div>
 
-                        <!-- Research List -->
+                        <!-- Conducted Research Projects -->
                         <div class="bg-surface rounded-3xl p-8 md:p-12 border border-brand-50">
                             <h3 class="text-2xl font-black text-dark mb-8 flex items-center gap-3">
                                 <svg class="w-6 h-6 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
@@ -484,101 +374,54 @@
                 `;
             }
 
-            // 🔵 BIZTOSS (새로운 레이아웃)
-            else if (id === 'biztoss') {
+            // BIZTOSS (Zig-zag, IR 전면 배치)
+            if (id === 'biztoss') {
                 return `
-                    <div class="max-w-6xl mx-auto py-10 px-6 md:px-0">
-                        
-                        <!-- Hero Section -->
-                        <header class="mb-32 text-center md:text-left border-b border-slate-100 pb-20">
-                            <div class="inline-block px-4 py-1 rounded-full border border-brand-500 text-brand-600 text-xs font-bold tracking-[0.2em] uppercase mb-6">${data.title}</div>
-                            <h2 class="text-5xl md:text-7xl font-black text-dark tracking-tighter leading-[1.1] mb-8">${data.subtitle}</h2>
-                            <p class="text-xl md:text-2xl text-slate-500 font-light max-w-4xl leading-relaxed">${data.desc}</p>
+                    <div class="max-w-6xl mx-auto py-10 px-0 md:px-6">
+                        <header class="mb-32">
+                            <div class="inline-block px-4 py-1 rounded-full border border-brand-500 text-brand-600 text-xs font-bold tracking-[0.3em] uppercase mb-6">${data.subtitle}</div>
+                            <h2 class="text-5xl md:text-7xl font-black text-dark tracking-tighter leading-[1.1] mb-8">${data.title}</h2>
+                            <p class="text-xl md:text-2xl text-slate-500 font-light max-w-3xl leading-relaxed">${data.quote}</p>
                         </header>
 
-                        <!-- Sections (Zig-zag) -->
-                        <div class="space-y-32 md:space-y-40 mb-32">
-                            ${data.sections.map((s, i) => `
+                        <div class="space-y-32 md:space-y-40">
+                            ${data.cards.map((s, i) => `
                                 <section class="group flex flex-col ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} gap-12 md:gap-16 items-center">
-                                    
                                     <div class="w-full md:w-1/2">
-                                        <div class="flex items-center gap-4 mb-4">
-                                            <span class="text-6xl md:text-7xl font-black text-brand-500/10 tracking-tighter transition-all group-hover:text-brand-500/20">${s.num}</span>
+                                        <div class="flex items-center gap-4 mb-6">
+                                            <span class="text-7xl font-black text-brand-500/10 tracking-tighter transition-all group-hover:text-brand-500/20">${s.num}</span>
+                                            <span class="px-3 py-1 bg-brand-50 text-brand-600 text-[10px] font-bold tracking-[0.2em] uppercase rounded-md border border-brand-100">${s.badge}</span>
                                         </div>
-                                        <h3 class="text-3xl md:text-4xl font-bold text-dark mb-2 tracking-tight group-hover:text-brand-600 transition-colors">${s.title}</h3>
-                                        <p class="text-lg font-medium text-brand-500 mb-8">${s.subtitle}</p>
+                                        <h3 class="text-3xl md:text-4xl font-bold text-dark mb-4 tracking-tight group-hover:text-brand-600 transition-colors">${s.title}</h3>
+                                        <p class="text-lg md:text-xl font-medium text-brand-500 mb-8 leading-tight italic">"${s.desc}"</p>
                                         
-                                        <div class="space-y-6">
-                                            <!-- Problem (Optional) -->
-                                            ${s.prob ? `
-                                            <div class="bg-slate-50 border border-slate-200 p-5 rounded-2xl">
-                                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Problem</span>
-                                                <ul class="text-slate-600 text-sm space-y-1">
-                                                    ${s.prob.map(p => `<li>• ${p}</li>`).join('')}
-                                                </ul>
-                                            </div>` : ''}
-                                            
-                                            <!-- Action -->
-                                            <div class="bg-brand-50 border border-brand-100 p-5 rounded-2xl">
-                                                <span class="text-[10px] font-black text-brand-500 uppercase tracking-widest block mb-2">Action</span>
-                                                <ul class="text-dark font-medium text-sm space-y-1.5">
-                                                    ${s.action.map(a => `<li>• ${a}</li>`).join('')}
-                                                </ul>
+                                        <div class="grid grid-cols-1 gap-8 border-t border-slate-100 pt-8">
+                                            <div class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-1 before:h-12 before:bg-slate-200">
+                                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] block mb-2">The Action</span>
+                                                <p class="text-slate-600 leading-relaxed text-sm md:text-base">${s.action}</p>
                                             </div>
-
-                                            <!-- Impact (Optional) -->
-                                            ${s.impact ? `
-                                            <div class="border-l-4 border-brand-500 pl-4 py-2">
-                                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Impact</span>
-                                                <ul class="text-brand-600 font-bold text-sm space-y-1">
-                                                    ${s.impact.map(imp => `<li>✓ ${imp}</li>`).join('')}
-                                                </ul>
-                                            </div>` : ''}
+                                            <div class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:w-1 before:h-12 before:bg-brand-500/30">
+                                                <span class="text-[10px] font-bold text-brand-500 uppercase tracking-[0.2em] block mb-2">The Impact</span>
+                                                <p class="text-dark font-bold leading-relaxed text-sm md:text-base">${s.outcome}</p>
+                                            </div>
                                         </div>
-
-                                        <!-- Why Us PDF Component (Appears only on Section 03) -->
-                                        ${s.pdf ? `
-                                        <div class="mt-8 bg-surface border border-slate-200 p-6 rounded-2xl tech-card">
-                                            <h4 class="text-lg font-bold text-dark mb-2">Why Biztoss</h4>
-                                            <p class="text-sm text-slate-500 mb-4">실사 자동화 구조, 거래 안전성 설계, 데이터 기반 가치 평가 모델을 정리했습니다.</p>
-                                            <a href="/pdf/why-biztoss.pdf" download class="inline-flex items-center gap-2 text-brand-600 font-bold hover:opacity-80 transition-opacity underline underline-offset-4">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                                                Download Framework PDF
-                                            </a>
-                                        </div>` : ''}
                                     </div>
 
-                                    <!-- Image Block -->
-                                    <div class="w-full md:w-1/2 overflow-hidden rounded-[2.5rem] bg-white aspect-[4/3] flex items-center justify-center border border-slate-100 shadow-soft group-hover:shadow-hover transition-all duration-700 relative">
-                                        <img src="${s.img}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" alt="${s.title}" onerror="this.style.opacity='0'">
-                                        <span class="absolute z-0 text-slate-300 text-xs font-bold tracking-widest uppercase">${s.img} Placeholder</span>
+                                    <div class="w-full md:w-1/2 overflow-hidden rounded-[2.5rem] bg-surface aspect-[4/3] flex items-center justify-center border border-brand-50 shadow-soft group-hover:shadow-hover transition-all duration-700">
+                                        ${s.img ? `<img src="${s.img}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="${s.title}" onerror="this.style.opacity='0'">` : `<span class="text-6xl md:text-8xl opacity-10 group-hover:opacity-30 transition-opacity text-brand-600">${s.icon}</span>`}
                                     </div>
                                 </section>
                             `).join('')}
                         </div>
-
-                        <!-- 🌟 Result Summary Section -->
-                        <div class="bg-dark rounded-[3rem] p-10 md:p-16 shadow-hover text-center relative overflow-hidden">
-                            <div class="absolute inset-0 bg-brand-500/10 mix-blend-overlay"></div>
-                            <h2 class="text-3xl md:text-5xl font-black text-white mb-10 relative z-10">Result Summary</h2>
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
-                                ${data.results.map(r => `
-                                    <div class="bg-white/5 border border-white/10 p-6 rounded-3xl backdrop-blur-sm hover:-translate-y-2 transition-transform">
-                                        <svg class="w-8 h-8 text-brand-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                        <p class="text-lg font-bold text-white">${r}</p>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
                     </div>
-                `;return '';
+                `;
             }
 
-            // 🔵 MEDIA
+            // MEDIA (가로 리스트 형태 유지)
             if (id === 'media') {
                 return `
-                    <div class="max-w-6xl mx-auto pt-8 px-6 md:px-0">
-                        <header class="mb-16">
+                    <div class="max-w-6xl mx-auto pt-8">
+                        <header class="mb-16 text-center md:text-left">
                             <h1 class="text-5xl md:text-7xl font-black text-dark tracking-tight mb-4">${data.title}</h1>
                             <p class="text-xl md:text-2xl text-brand-600 font-bold mb-6">${data.subtitle}</p>
                             <p class="text-lg text-slate-500 font-medium max-w-3xl leading-relaxed">${data.quote}</p>
@@ -589,7 +432,7 @@
                                 <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                             </div>
                         </div>
-                        <h4 class="text-2xl font-black text-dark mb-8 border-b border-slate-200 pb-3">Production Process</h4>
+                        <h4 class="text-2xl font-black text-dark mb-8 border-b border-slate-100 pb-3">Production Process</h4>
                         <div class="flex flex-col md:flex-row gap-6">
                             ${data.process.map(s => `
                                 <div class="flex-1 bg-white p-8 rounded-3xl shadow-soft border-t-4 border-brand-500 tech-card">
@@ -603,11 +446,11 @@
                 `;
             }
 
-            // 🔵 DISCIPLINE
+            // DISCIPLINE
             if (id === 'discipline') {
                 return `
-                    <div class="max-w-6xl mx-auto pt-8 px-6 md:px-0">
-                        <header class="mb-16 text-center md:text-left">
+                    <div class="max-w-6xl mx-auto pt-8 text-center md:text-left">
+                        <header class="mb-16">
                             <h1 class="text-5xl md:text-7xl font-black text-dark tracking-tight mb-4">${data.title}</h1>
                             <p class="text-xl md:text-2xl text-brand-600 font-bold mb-6">${data.subtitle}</p>
                             <p class="text-lg text-slate-500 font-medium max-w-3xl leading-relaxed">${data.quote}</p>
@@ -615,17 +458,17 @@
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
                             ${data.items.map(item => `
                                 <div class="bg-white rounded-4xl overflow-hidden shadow-soft tech-card flex flex-col border border-slate-100">
-                                    <div class="aspect-[4/3] bg-slate-100 relative flex items-center justify-center border-b border-slate-100">
+                                    <div class="aspect-[4/3] bg-surface relative flex items-center justify-center border-b border-brand-50">
                                         <img src="${item.img}" class="absolute inset-0 w-full h-full object-cover" onerror="this.style.opacity='0'">
                                         <span class="z-10 text-xs font-bold text-slate-400 tracking-widest uppercase">${item.img}</span>
                                     </div>
-                                    <div class="p-8 flex flex-col flex-grow">
+                                    <div class="p-8 flex flex-col flex-grow text-left">
                                         <h3 class="text-xl font-bold text-dark mb-1">${item.title}</h3>
-                                        <p class="text-xs font-bold text-brand-600 mb-5 tracking-widest uppercase">${item.role}</p>
+                                        <p class="text-xs font-bold text-brand-500 mb-5 tracking-widest uppercase">${item.role}</p>
                                         <ul class="space-y-2 text-sm text-slate-500 font-medium mb-8">
                                             ${item.points.map(pt => `<li class="flex items-start gap-2"><span class="text-brand-300 mt-0.5">●</span>${pt}</li>`).join('')}
                                         </ul>
-                                        <div class="mt-auto bg-surface p-4 rounded-2xl border border-slate-100">
+                                        <div class="mt-auto bg-surface p-4 rounded-2xl border border-brand-50">
                                             <span class="text-[10px] font-black text-brand-500 uppercase tracking-widest block mb-1">Insight</span>
                                             <p class="text-dark font-bold text-xs leading-relaxed">"${item.insight}"</p>
                                         </div>
@@ -728,7 +571,7 @@
             if (e.key === 'Enter') verifyAdmin();
         });
 
-        // Initialize App
+        // Initialize
         renderApp();
     </script>
 </body>
